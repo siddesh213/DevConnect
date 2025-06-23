@@ -1,0 +1,17 @@
+{
+  "name": "devtinder-backebd",
+  "version": "1.0.0",
+  "description": "platform for devs",
+  "main": "index.js",
+  "scripts": {
+   "devs":" nodemon src/app.js "
+  },
+  "author": "siddesh",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^5.1.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10"
+  }
+}
