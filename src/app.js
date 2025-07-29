@@ -1,41 +1,31 @@
 const express=require("express")
-const app=express();
+const app=express()
+const {UserModel}=require("./models/user")
+const {conncectdb}=require("./config/database")
+app.use("/",express.json())
+
+app.post("/signup",async(req,res)=>{
 
 
-app.get("/user",(req,res,next)=>{
-   console.log("my first console")
-    next();
-},(req,res,next)=>{
-   console.log("my second console")
-    next();
-},(req,res,next)=>{
-   
 
-    console.log("my third console")
-    next();
-   
-},(req,res,next)=>{
-   
 
-    console.log("my fourth console")
-    next();
-   
-},(req,res,next)=>{
-  res.send("5th responce")
-   next();
-
-     console.log("my fifth console")
-     
-    
-},(req,res)=>{
-    console.log("hi");
-    // res.send("my 6th respnce")
-    
-    
-
+    const UserObj= new UserModel(req.body)
+    try{
+    await UserObj.save()
+    res.send("Signup Succesfully")
+    }catch(err){
+        res.status(400).send("User Failed to signup",err.message)
+    }
 })
 
 
+
+
+
+
+conncectdb()
+console.log("data base is connected succesfully")
+
 app.listen(3000,()=>{
-    console.log("server is listening on port 3000");
+    console.log("server is running on port 3000")
 })

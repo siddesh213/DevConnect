@@ -4,12 +4,14 @@
   "description": "platform for devs",
   "main": "index.js",
   "scripts": {
-   "devs":" nodemon src/app.js "
+    "dev": " nodemon src/app.js "
+
   },
   "author": "siddesh",
   "license": "ISC",
   "dependencies": {
-    "express": "^5.1.0"
+    "express": "^5.1.0",
+    "mongoose": "^8.16.4"
   },
   "devDependencies": {
     "nodemon": "^3.1.10"
