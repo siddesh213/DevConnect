@@ -1,6 +1,8 @@
 const mongoose=require("mongoose");
 
 // Create a UserSchema
+const allowedGenders = ["male", "female", "binary"];
+
 const UserSchema=mongoose.Schema({
     FirstName:{
         type:String,
@@ -8,10 +10,17 @@ const UserSchema=mongoose.Schema({
     },
     LastName:{
         type:String,
-        required:true
+       
     },
     EmailId:{
-        type:String
+
+        type:String,
+        required:true,
+        unique:true,
+        lowercase:true,
+          trim: true
+        
+
         
       
     },
@@ -22,13 +31,33 @@ const UserSchema=mongoose.Schema({
     },
     Gender:{
         type:String,
-        required:true
+      
+        validate:{
+            validator: function(value) {
+                    return allowedGenders.includes(value)
+                },
+                message:"Give  valid gender"
+        },
     },
-    Age:{
-        type:Number
-    }
+        
     
+    Age:{
+        type:Number,
+        min:18
+    },
+    PhotoUrl:{
+        type:String
+    },
+    About:{
+        type:String,
+        default:"This Is The Info Of My Profile"
+
+    },
+    Skills:{
+        type:[String]
+    }
 })
+
 // Create User model
 
 const UserModel=mongoose.model("User",UserSchema)
