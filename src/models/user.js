@@ -6,10 +6,16 @@ const allowedGenders = ["male", "female", "binary"];
 const UserSchema=mongoose.Schema({
     FirstName:{
         type:String,
-        required:true
+        required:true,
+        minLength:5,
+    
+        maxLength:10
     },
+  
     LastName:{
         type:String,
+        minLength:2,
+        minLength:4
        
     },
     EmailId:{
@@ -26,11 +32,15 @@ const UserSchema=mongoose.Schema({
     },
     PassWord:{
         type:String,
-        required:true
+        required:true,
+        unique:true
+        
 
     },
     Gender:{
         type:String,
+        required:true,
+        lowercase:true,
       
         validate:{
             validator: function(value) {
@@ -43,7 +53,14 @@ const UserSchema=mongoose.Schema({
     
     Age:{
         type:Number,
-        min:18
+        min:[18,"User must be at least 18 years old"],
+        max:[90,"please enter a realistic age"],
+       
+        validate:{
+            validator:Number.isInteger,
+            message:"Age must be an integer"
+        }
+
     },
     PhotoUrl:{
         type:String
@@ -54,8 +71,12 @@ const UserSchema=mongoose.Schema({
 
     },
     Skills:{
-        type:[String]
-    }
+        type:[String],
+        default:[]
+    },
+
+},{
+    timestamps:true
 })
 
 // Create User model
