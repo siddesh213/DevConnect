@@ -1,25 +1,41 @@
 const express=require("express")
 const app=express()
+const validator=require("validator")
 const {UserModel}=require("./models/user")
 const {conncectdb}=require("./config/database")
 const { trusted } = require("mongoose")
+const {ValidateSignupData}=require("./utils/validation")
+const bcrypt=require("bcrypt")
 app.use("/",express.json())
 
 // Save User Data Into Your DataBase
 app.post("/signup",async(req,res)=>{
-
-
-
-
-    const UserObj= new UserModel(req.body)
     try{
+    ValidateSignupData(req)
+    const {FirstName,LastName,EmailId,PassWord}=req.body
+    const saltRounds=10
+    const hashPassword=await bcrypt.hash(PassWord,saltRounds)
+    console.log(hashPassword)
+    
+    const UserObj= new UserModel({FirstName,LastName,EmailId,PassWordhashPassword})
+    
     await UserObj.save()
     res.send("Signup Succesfully")
     }catch(err){
         console.log(err.message)
-        res.status(400).send("User Failed to signup",err.message)
+        res.status(400).send(err.message)
     }
 })
+
+       
+
+    
+    
+
+
+
+
+
 
 // Get The Data From Your DataBase
 
@@ -66,35 +82,63 @@ app.delete("/userdata",async(req,res)=>{
 })
 
 
-// Example Express.js route for updating a user's email
+
+// Exple Express.js route for updating a user's email
 app.patch("/update/:id", async (req, res) => {
-    const allowedFields = ["FirstName", "LastName", "PassWord", "Age", "PhotoUrl", "Skills"];
-    const updates = req.body;
-
-    const updateKeys = Object.keys(updates); // keys of fields client wants to update
-    const isValidUpdate = updateKeys.every(field => allowedFields.includes(field));
-
-    if (!isValidUpdate) {
-        return res.status(400).send("You are not following the schema rules!");
-    }
+   
 
     try {
-        const updatedUser = await UserModel.findByIdAndUpdate(
-            req.params.id,                   // ID is expected in the body
-            { $set: updates },            // Only update fields passed by client
-            { new: true, runValidators: true } // new=true returns updated doc, runValidators checks schema
-        );
+         const allowedFields = [ "Age", "PhotoUrl", "Skills","About",];
+        const updates = req.body;
+        const Max_Skills=12;
+ 
 
-        if (!updatedUser) {
+        const UpdateKey=Object.keys(updates)
+        const IsAllowed=UpdateKey.every(fields=>allowedFields.includes(fields))
+
+        if (!IsAllowed) {
+           throw new Error("You Cannot Update ");
+        }
+        else if(updates.Skills.length>Max_Skills){
+            res.send(`You are not allowed to add more than ${Max_Skills } skills`)
+        }
+        const UpdateUser= await UserModel.findByIdAndUpdate(req.params.id,
+            {$set:updates},
+            {new:true,runValidators:true},
+            )
+    
+
+        if (!UpdateUser) {
             return res.status(404).send("User not found");
         }
 
-        res.status(200).json(updatedUser); // Send the full updated document
+        res.status(200).json(UpdateUser); // Send the full updated document
     } catch (err) {
         console.error(err.message);
-        res.status(500).send("Server error");
+        res.status(500).send("Failed to update");
     }
 });
+
+app.post("/register",async(req,res)=>{
+    const {email,password}=req.body
+    try{
+        if (!validator.isEmail(email)){
+        res.send("invalid emails info")
+    } if(!validator.isStrongPassword(password)){
+        res.send("invalid  password info")
+
+    }else{
+        const us= new UserModel(req.body)
+         await us.save
+        res.send("registerd succsefully")
+    }
+    }catch(err){
+        console.log(err.message)
+    }
+
+    })
+
+
 
 conncectdb()
 console.log("data base is connected succesfully")
