@@ -1,20 +1,33 @@
-const auth =(req,res,next)=>{
-    const token="sidduyadav";
-    if (token=="sidduyaav"){
-        console.log("Admin is authorized so send the all data")
-        next();
-    }else{
-        res.status(401).send("not found ")
-    }
-}
-const userAuth=(req,res,next)=>{
-    const token="siddu";
-    if(token=="siddu1"){
-        next()
-    }else{
-        res.status(401).send(" user is unAuthorized")
-    }
-}
 
-module.exports={
-    auth,userAuth}
+
+
+const jwt=require("jsonwebtoken")
+const {UserModel}=require("../models/user")
+const UserAuth=async(req,res,next)=>{
+    try{
+    const token=req.cookies.token
+    if (!token){
+        throw new Error("Please login")
+    }
+    const Decodeobj=jwt.verify(token,"DevConnector@2004")
+    
+  
+   const {User_Id}=Decodeobj
+    const User=await UserModel.findById(User_Id)
+    if (!User){
+        throw new Error("User not found")
+    }
+     req.User=User
+       
+    next();
+   
+    }catch(err){
+       res.status(400).send("ERROR:" +err.message)
+        
+    }
+
+
+
+
+}
+module.exports={UserAuth}
