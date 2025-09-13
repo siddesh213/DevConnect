@@ -7,12 +7,12 @@ const bcrypt=require("bcrypt")
 authRouter.post("/signup",async(req,res)=>{
     try{
     ValidateSignupData(req)
-    const {FirstName,LastName,EmailId,PassWord}=req.body
+    const {FirstName,LastName,EmailId,PassWord,Age}=req.body
     const saltRounds=10
     const hashPassword=await bcrypt.hash(PassWord,saltRounds)
     // console.log(hashPassword)
     
-    const UserObj= new UserModel({FirstName,LastName,EmailId,PassWord:hashPassword})
+    const UserObj= new UserModel({FirstName,LastName,EmailId,Age,PassWord:hashPassword})
     
     await UserObj.save()
     res.send("Signup Succesfully")

@@ -48,10 +48,11 @@ const UserSchema = new mongoose.Schema({
   Gender: {
     type: String,
     lowercase: true,
-    validate: {
-      validator: (value) => allowedGenders.includes(value),
-      message: "Gender must be male, female, or binary"
+    enum:{
+      values:["male","female","other"],
+      message:`{VALUE} is not valid gender`
     }
+  
   },
 
   Age: {
@@ -80,7 +81,15 @@ const UserSchema = new mongoose.Schema({
 
   Skills: {
     type: [String],
-    default: []
+    default: [],
+    validate:{
+      validator:function(arr){
+        return arr.length<=10
+      },
+      message:"You can only add up to 10 skills."
+       
+      
+    }
   }
 }, {
   timestamps: true

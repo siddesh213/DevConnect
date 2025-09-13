@@ -15,5 +15,19 @@ const ValidateSignupData=(req)=>{
 
 
 }
+
+const ValidateProfileEditData=(req)=>{
+         const AllowEditFields=["FirstName","LastName","Age","Skills","About","PhotoUrl","Gender"]
+         if(req.body.Skills.length>10){
+           throw new Error("you can only add upto 10 skills")
+
+         }
+
+   
+   const Isallowed=Object.keys(req.body).every(field=>AllowEditFields.includes(field))
+   return Isallowed
+  
+
+}
 module.exports={
-    ValidateSignupData}
+    ValidateSignupData,ValidateProfileEditData}
