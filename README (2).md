@@ -140,29 +140,6 @@ Server runs at: `http://localhost:3000/`
 
 ---
 
-## 🔗 Frontend Integration
-The frontend for DevTinder is available at:
-🔗 **[DevTinder Frontend Repository](https://github.com/akshadjaiswal/devTinder-frontend)**
-
-Make sure the backend is running before accessing the frontend.
-
----
-## Learning Resources
-
-Explore my additional repositories to deepen your understanding of related topics in the JavaScript ecosystem:
-
-- [Namaste Javascript](https://github.com/akshadjaiswal/Namaste-Javascript): A repository focused on learning Javascript concepts, from basics to advanced programming.
-- [Namaste React](https://github.com/akshadjaiswal/Namaste-React): A repository dedicated to mastering React.js, covering foundational and advanced aspects of building interactive UIs.
-
----
-
-## 📢 Contribution Guidelines
-Since the project is now fully functional, improvements are still welcome!
-✅ Feel free to open issues for bugs or feature requests.  
-✅ Fork the repository and submit a pull request.  
-
----
-
 ## 📌 Future Enhancements
 🔹 Real-time notifications using WebSockets  
 🔹 Messaging System for better user interaction  
