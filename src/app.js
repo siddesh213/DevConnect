@@ -13,10 +13,11 @@ app.use(cookie_parser())
 const {authRouter}=require("./Routers/Auth")
 const {ProfileRouter}=require("./Routers/profile")
 const {RequestRouter}=require("./Routers/sendrequest.js")
+const {getuserrequest}=require("./Routers/getuserrequest.js")
 app.use("/",authRouter)
 app.use("/",ProfileRouter)
 app.use("/",RequestRouter)
-
+app.use("/",getuserrequest)
 
 conncectdb()
 console.log("data base is connected succesfully")

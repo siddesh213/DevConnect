@@ -30,11 +30,11 @@ authRouter.post("/login",async(req,res)=>{
 
     const Find_Email=await  UserModel.findOne({EmailId:EmailId})
     if(!Find_Email){
-        res.status(404).send(" invalid credentials")
+         return res.status(404).send(" invalid credentials")
 }
     const Find_Passoword=await Find_Email.VerifyPassword(PassWord)
     if(!Find_Passoword){
-        res.status(404).send(" invalid credentials")
+         return res.status(404).send(" invalid credentials")
     }
 
     const token= await Find_Email.getJWT();
@@ -59,4 +59,4 @@ authRouter.post("/logout",async(req,res)=>{
 
 module.exports={authRouter}
 
-
+//~
